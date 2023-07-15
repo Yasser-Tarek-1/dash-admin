@@ -1,0 +1,58 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap");
+
+:root {
+  --main-color: "#131921";
+  --head-color: "#e3a008";
+}
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Montserrat", sans-serif !important;
+  background-color: rgb(245 245 245) !important;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+a {
+  text-decoration: none;
+  color: #000;
+}
+
+li {
+  list-style: none;
+}
+
+/* auth */
+.auth {
+  width: "100%";
+  min-height: 100vh;
+  background-color: #131921;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* NavLink */
+a.active-link > div,
+a.active > div {
+  background-color: #f9a825 !important;
+}
+
+/* DatePicker */
+.css-1h2rqly-MuiStack-root {
+  flex-direction: column !important;
+}
+
+.css-1gplja-MuiTable-root {
+  min-width: 260px !important;
+}
+
+.MuiDrawer-root {
+  position: absolute;
+}
