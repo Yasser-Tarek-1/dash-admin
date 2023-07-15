@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
 import TabelContainer from "../components/TabelContainer";
+import Protected from "../components/ProtectRoute/Protect";
 
 const headCells = [
   {
@@ -42,4 +43,4 @@ const Enquiries = () => {
   );
 };
 
-export default Enquiries;
+export default Protected(Enquiries);

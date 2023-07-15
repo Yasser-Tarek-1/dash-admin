@@ -69,7 +69,7 @@ const Root = () => {
               gap="16px"
               justifyContent="end"
             >
-              <Badge badgeContent={4} color="secondary" sx>
+              <Badge badgeContent={4} color="secondary">
                 <NotificationsIcon />
               </Badge>
               <Stack flexDirection="row" alignItems="center" gap="12px">

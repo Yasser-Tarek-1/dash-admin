@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { MuiFileInput } from "mui-file-input";
+import Protected from "../../components/ProtectRoute/Protect";
 
 const Blog = () => {
   const [blog, setBlog] = useState("");
@@ -33,8 +34,8 @@ const Blog = () => {
             variant="outlined"
             placeholder="Enter Blog Details"
             multiline
-            rows={3}
-            rowsMax={6}
+            maxRows={6}
+            minRows={3}
             color="secondary"
           />
 
@@ -68,4 +69,4 @@ const Blog = () => {
   );
 };
 
-export default Blog;
+export default Protected(Blog);

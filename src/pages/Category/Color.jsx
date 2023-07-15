@@ -1,6 +1,7 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
 import { MuiColorInput } from "mui-color-input";
 import { useState } from "react";
+import Protected from "../../components/ProtectRoute/Protect";
 
 const Color = () => {
   const [value, setValue] = useState("#ffffff");
@@ -36,4 +37,4 @@ const Color = () => {
   );
 };
 
-export default Color;
+export default Protected(Color);

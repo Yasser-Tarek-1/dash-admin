@@ -4,6 +4,8 @@ import router from "./router.jsx";
 import { ThemeProvider, createTheme } from "@mui/material";
 import "./global.css";
 import { yellow } from "@mui/material/colors";
+import { store } from "./store";
+import { Provider } from "react-redux";
 
 const theme = createTheme({
   palette: {
@@ -15,7 +17,9 @@ const theme = createTheme({
 });
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <ThemeProvider theme={theme}>
-    <RouterProvider router={router} />
-  </ThemeProvider>
+  <Provider store={store}>
+    <ThemeProvider theme={theme}>
+      <RouterProvider router={router} />
+    </ThemeProvider>
+  </Provider>
 );

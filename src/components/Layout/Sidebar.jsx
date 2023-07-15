@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import MuiDrawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
@@ -124,8 +124,8 @@ const Sidebar = ({ open, handleDrawerClose }) => {
               </ListItemButton>
             </NavLink>
           ) : (
-            <>
-              <ListItemButton key={key} onClick={() => handleShowLinks(key)}>
+            <Fragment key={key}>
+              <ListItemButton onClick={() => handleShowLinks(key)}>
                 <ListItemIcon sx={{ color: "#131921" }}>{icon}</ListItemIcon>
                 <ListItemText primary={label} />
                 {showLinks == key ? <ExpandLess /> : <ExpandMore />}
@@ -146,7 +146,7 @@ const Sidebar = ({ open, handleDrawerClose }) => {
                   })}
                 </List>
               </Collapse>
-            </>
+            </Fragment>
           );
         })}
       </List>

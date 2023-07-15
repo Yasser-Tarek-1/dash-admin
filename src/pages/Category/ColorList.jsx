@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
 import TabelContainer from "../../components/TabelContainer";
+import Protected from "../../components/ProtectRoute/Protect";
 
 const headCells = [
   {
@@ -25,4 +26,4 @@ const ColorList = () => {
   );
 };
 
-export default ColorList;
+export default Protected(ColorList);

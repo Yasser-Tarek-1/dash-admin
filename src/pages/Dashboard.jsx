@@ -2,6 +2,7 @@ import { Box, Card, Stack, Typography } from "@mui/material";
 import MovingIcon from "@mui/icons-material/Moving";
 import Chart from "../components/Chart";
 import TabelContainer from "../components/TabelContainer";
+import Protected from "../components/ProtectRoute/Protect";
 
 const Compared = [
   {
@@ -105,7 +106,7 @@ const Dashboard = () => {
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: "48px" }}>
       {/* Dashboard */}
-      {/* <Box>
+      <Box>
         <Typography
           component="h3"
           sx={{ fontSize: "26px", fontWeight: 600, mb: "32px" }}
@@ -145,9 +146,9 @@ const Dashboard = () => {
             </Card>
           ))}
         </Stack>
-      </Box> */}
+      </Box>
       {/* Income Statics */}
-      {/* <Box>
+      <Box>
         <Typography
           component="h3"
           sx={{ fontSize: "26px", fontWeight: 600, mb: "32px" }}
@@ -155,7 +156,7 @@ const Dashboard = () => {
           Income Statics
         </Typography>
         <Chart data={data} />
-      </Box> */}
+      </Box>
       {/*   Recent Orders */}
       <TabelContainer
         rows={rows}
@@ -166,4 +167,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default Protected(Dashboard);

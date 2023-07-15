@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
 import TabelContainer from "../../components/TabelContainer";
+import Protected from "../../components/ProtectRoute/Protect";
 
 const headCells = [
   {
@@ -32,12 +33,6 @@ const headCells = [
     disablePadding: false,
     label: "Action",
   },
-  {
-    id: "color",
-    numeric: true,
-    disablePadding: false,
-    label: "Color",
-  },
 ];
 
 const ProductList = () => {
@@ -48,4 +43,4 @@ const ProductList = () => {
   );
 };
 
-export default ProductList;
+export default Protected(ProductList);

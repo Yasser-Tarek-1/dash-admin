@@ -7,6 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Link } from "react-router-dom";
+import ProtectedAuth from "../../components/ProtectRoute/ProtectedAuth";
 
 const ForgotPassword = () => {
   return (
@@ -55,4 +56,4 @@ const ForgotPassword = () => {
   );
 };
 
-export default ForgotPassword;
+export default ProtectedAuth(ForgotPassword);

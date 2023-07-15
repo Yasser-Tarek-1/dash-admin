@@ -1,4 +1,5 @@
 import { Box, Button, Stack, TextField, Typography } from "@mui/material";
+import Protected from "../../components/ProtectRoute/Protect";
 
 const Category = () => {
   return (
@@ -30,4 +31,4 @@ const Category = () => {
   );
 };
 
-export default Category;
+export default Protected(Category);

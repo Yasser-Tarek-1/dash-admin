@@ -7,6 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Link } from "react-router-dom";
+import ProtectedAuth from "../../components/ProtectRoute/ProtectedAuth";
 
 const ResetPassword = () => {
   return (
@@ -63,4 +64,4 @@ const ResetPassword = () => {
   );
 };
 
-export default ResetPassword;
+export default ProtectedAuth(ResetPassword);

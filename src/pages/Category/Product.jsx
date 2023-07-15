@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { MuiFileInput } from "mui-file-input";
-import AddIcon from "@mui/icons-material/Add";
+import Protected from "../../components/ProtectRoute/Protect";
 
 const Product = () => {
   const [brand, setBrand] = useState("");
@@ -37,8 +37,8 @@ const Product = () => {
             variant="outlined"
             placeholder="Enter Product Des"
             multiline
-            rows={3}
-            rowsMax={6}
+            maxRows={6}
+            minRows={3}
             color="secondary"
           />
           <TextField
@@ -124,4 +124,4 @@ const Product = () => {
   );
 };
 
-export default Product;
+export default Protected(Product);
