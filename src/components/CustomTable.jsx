@@ -7,6 +7,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Box, IconButton, Typography } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { yellow } from "@mui/material/colors";
 
 const CustomTable = ({ headers, rows, title }) => {
   return (
@@ -14,15 +15,29 @@ const CustomTable = ({ headers, rows, title }) => {
       <Typography component="h3" sx={{ fontSize: "26px", fontWeight: 600 }}>
         {title}
       </Typography>
-      <Box sx={{ overflow: "auto" }}>
-        <Box sx={{ width: "100%", display: "table", tableLayout: "fixed" }}>
+      <Box sx={{ overflow: "auto", height: "600px" }}>
+        <Box
+          sx={{
+            width: "100%",
+            display: "table",
+            tableLayout: "fixed",
+          }}
+        >
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
-                <TableRow>
-                  {/* <TableCell>Dessert (100g serving)</TableCell> */}
+                <TableRow
+                  sx={{
+                    bgcolor: "#131921",
+                  }}
+                >
                   {headers?.map((header, idx) => (
-                    <TableCell key={idx}>{header}</TableCell>
+                    <TableCell
+                      sx={{ color: yellow[800], fontWeight: 500 }}
+                      key={idx}
+                    >
+                      {header}
+                    </TableCell>
                   ))}
                 </TableRow>
               </TableHead>
@@ -41,6 +56,7 @@ const CustomTable = ({ headers, rows, title }) => {
                     {row?.price && <TableCell>${row.price}</TableCell>}
                     {row?.email && <TableCell>{row.email}</TableCell>}
                     {row?.mobile && <TableCell>{row.mobile}</TableCell>}
+                    {row?.createdAt && <TableCell>{row?.createdAt}</TableCell>}
                     <TableCell>
                       <IconButton>
                         <DeleteIcon color="error" />

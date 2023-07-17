@@ -35,8 +35,6 @@ const Customers = () => {
     }
   }, [customers]);
 
-  console.log(rows);
-
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: "32px" }}>
       <CustomTable title="Customers" rows={rows} headers={headers} />

@@ -14,12 +14,12 @@ const ProductList = () => {
   const { products } = useSelector((state) => state.products);
   const dispatch = useDispatch();
   const [rows, setRow] = useState([]);
-
   useEffect(() => {
     dispatch(getProducts());
   }, [dispatch]);
 
   useEffect(() => {
+    setRow([]);
     for (let i = 0; i < products.length; i++) {
       setRow((prev) => {
         return [
