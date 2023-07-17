@@ -7,10 +7,10 @@ import {
   Typography,
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
-import { Formik, useFormik } from "formik";
+import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../../store/auth/authSlice";
+import { login } from "../../features/auth/authSlice";
 import ProtectedAuth from "../../components/ProtectRoute/ProtectedAuth";
 
 const LoginSchema = Yup.object().shape({

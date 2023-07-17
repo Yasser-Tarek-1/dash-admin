@@ -149,7 +149,7 @@ function EnhancedTableToolbar(props) {
       )}
 
       {numSelected > 0 ? (
-        <Tooltip title="Delete">
+        <Tooltip title="Delete" onClick={() => console.log(numSelected)}>
           <IconButton>
             <DeleteIcon />
           </IconButton>
@@ -169,7 +169,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-const TabelContainer = ({ headCells, rows, title }) => {
+const TabelContainer = ({ headCells = [], rows = [], title = "TEST" }) => {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
   const [selected, setSelected] = React.useState([]);
@@ -277,7 +277,7 @@ const TabelContainer = ({ headCells, rows, title }) => {
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
-                    key={row.name}
+                    key={row.id || row.name}
                     selected={isItemSelected}
                     sx={{ cursor: "pointer" }}
                   >

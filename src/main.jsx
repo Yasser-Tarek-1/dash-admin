@@ -4,7 +4,7 @@ import router from "./router.jsx";
 import { ThemeProvider, createTheme } from "@mui/material";
 import "./global.css";
 import { yellow } from "@mui/material/colors";
-import { store } from "./store";
+import { store } from "./app/store.js";
 import { Provider } from "react-redux";
 
 const theme = createTheme({

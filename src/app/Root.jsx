@@ -13,7 +13,10 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import Sidebar, {
   drawerWidth,
   DrawerHeader,
-} from "./components/Layout/Sidebar";
+} from "../components/Layout/Sidebar";
+// alert
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -46,6 +49,18 @@ const Root = () => {
 
   return (
     <Box sx={{ display: "flex" }}>
+      <ToastContainer
+        position="top-right"
+        autoClose={1500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <CssBaseline />
       <AppBar position="fixed" open={open} color="primary">
         <Toolbar>

@@ -1,8 +1,8 @@
 import { Box, Card, Stack, Typography } from "@mui/material";
 import MovingIcon from "@mui/icons-material/Moving";
 import Chart from "../components/Chart";
-import TabelContainer from "../components/TabelContainer";
 import Protected from "../components/ProtectRoute/Protect";
+import CustomTable from "../components/CustomTable";
 
 const Compared = [
   {
@@ -63,44 +63,11 @@ const data = [
 ];
 
 // Table Data
-const rows = [
-  {
-    name: "yasser",
-    product: "",
-    status: "",
-  },
-  {
-    name: "tarek",
-    product: "",
-    status: "",
-  },
-  {
-    name: "abdo",
-    product: "",
-    status: "",
-  },
-];
-
-const headCells = [
-  {
-    id: "name",
-    numeric: false,
-    disablePadding: true,
-    label: "Name",
-  },
-  {
-    id: "product",
-    numeric: true,
-    disablePadding: false,
-    label: "Product",
-  },
-  {
-    id: "status",
-    numeric: true,
-    disablePadding: false,
-    label: "Status",
-  },
-];
+function createData(id, name, email, mobile) {
+  return { id, name, email, mobile };
+}
+const headers = ["Name", "Email", "Mobile", "Action"];
+const rows = [];
 
 const Dashboard = () => {
   return (
@@ -157,12 +124,7 @@ const Dashboard = () => {
         </Typography>
         <Chart data={data} />
       </Box>
-      {/*   Recent Orders */}
-      <TabelContainer
-        rows={rows}
-        headCells={headCells}
-        title={"Recent Orders"}
-      />
+      <CustomTable title="Last Orders" rows={rows} headers={headers} />
     </Box>
   );
 };

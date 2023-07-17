@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import Root from "./Root";
+import Root from "./app/Root";
 import Login from "./pages/auth/Login";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import ResetPassword from "./pages/auth/ResetPassword";
@@ -21,7 +21,6 @@ import BlogList from "./pages/Blogs/BlogList";
 import BlogCategory from "./pages/Blogs/BlogCategory";
 import BlogCategoryList from "./pages/Blogs/BlogCategoryList";
 import Enquiries from "./pages/Enquiries";
-import TabelContainer from "./components/TabelContainer";
 
 const router = createBrowserRouter([
   {

@@ -1,21 +1,58 @@
-import {
-  Box,
-  Button,
-  MenuItem,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
-import { useState } from "react";
-import { MuiFileInput } from "mui-file-input";
+import { Box, Typography } from "@mui/material";
 import Protected from "../../components/ProtectRoute/Protect";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { useState } from "react";
+
+import ProductForm from "./ProductForm";
+
+const ProductSchema = Yup.object().shape({
+  title: Yup.string()
+    .min(2, "Too Short!")
+    .max(50, "Too Long!")
+    .required("Required"),
+  description: Yup.string()
+    .min(2, "Too Short!")
+    .max(150, "Too Long!")
+    .required("Required"),
+  price: Yup.string().required("Required"),
+  category: Yup.string().required("Required"),
+  brand: Yup.string().required("Required"),
+  color: Yup.string().required("Required"),
+  quantity: Yup.string().required("Required"),
+});
 
 const Product = () => {
-  const [brand, setBrand] = useState("");
-  const [category, setCategory] = useState("");
-  const [sec, setSec] = useState("");
-  const [color, setColor] = useState("");
-  const [file, setFile] = useState(null);
+  const [images, setImages] = useState("");
+  const [error, setError] = useState("");
+
+  const formik = useFormik({
+    initialValues: {
+      title: "",
+      description: "",
+      price: "",
+      category: "",
+      brand: "",
+      color: "",
+      quantity: "",
+      images: "",
+    },
+    validationSchema: ProductSchema,
+    onSubmit: (values) => {
+      if (images) {
+        console.log({ ...values, images });
+        setError("");
+        // login here
+      } else {
+        setError("Please enter a image");
+      }
+    },
+  });
+
+  const imagesHandler = (images) => {
+    setImages(images);
+    setError("");
+  };
 
   return (
     <Box>
@@ -25,101 +62,13 @@ const Product = () => {
       >
         Add Product
       </Typography>
-      <form>
-        <Stack gap="32px">
-          <TextField
-            label="Enter Product Name"
-            variant="outlined"
-            type="text"
-            color="secondary"
-          />
-          <TextField
-            variant="outlined"
-            placeholder="Enter Product Des"
-            multiline
-            maxRows={6}
-            minRows={3}
-            color="secondary"
-          />
-          <TextField
-            label="Enter Product Price"
-            variant="outlined"
-            type="number"
-            color="secondary"
-          />
-          <TextField
-            value={brand}
-            onChange={(e) => setBrand(e.target.value)}
-            select
-            label="Select Brand"
-            color="secondary"
-          >
-            <MenuItem key={1} value="test">
-              Test 1
-            </MenuItem>
-            <MenuItem key={2} value="test2">
-              Test 2
-            </MenuItem>
-          </TextField>
-          <TextField
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            select
-            label="Select Brand"
-            color="secondary"
-          >
-            <MenuItem key={1} value="test">
-              Test 1
-            </MenuItem>
-            <MenuItem key={2} value="test2">
-              Test 2
-            </MenuItem>
-          </TextField>
-          <TextField
-            value={sec}
-            onChange={(e) => setSec(e.target.value)}
-            select
-            label="Select Brand"
-            color="secondary"
-          >
-            <MenuItem key={1} value="test">
-              Test 1
-            </MenuItem>
-            <MenuItem key={2} value="test2">
-              Test 2
-            </MenuItem>
-          </TextField>
-          <TextField
-            value={color}
-            onChange={(e) => setColor(e.target.value)}
-            select
-            label="Select Brand"
-            color="secondary"
-          >
-            <MenuItem key={1} value="test">
-              Test 1
-            </MenuItem>
-            <MenuItem key={2} value="test2">
-              Test 2
-            </MenuItem>
-          </TextField>
-          <TextField
-            label="Enter Product Quantity"
-            variant="outlined"
-            type="number"
-            color="secondary"
-          />
-          <MuiFileInput
-            value={file}
-            onChange={(newFile) => setFile(newFile)}
-            color="secondary"
-            label="Drag 'n' drop some files here, or click to select files"
-          />
-          <Button variant="contained" color="secondary">
-            Add Product
-          </Button>
-        </Stack>
-      </form>
+      <ProductForm
+        formik={formik}
+        images={images}
+        imagesHandler={imagesHandler}
+        error={error}
+        setError={setError}
+      />
     </Box>
   );
 };
