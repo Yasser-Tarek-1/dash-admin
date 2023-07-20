@@ -20,6 +20,7 @@ const Customers = () => {
   }, [dispatch]);
 
   useEffect(() => {
+    setRows([]);
     for (let i = 0; i < customers.length; i++) {
       setRows((prev) => {
         return [

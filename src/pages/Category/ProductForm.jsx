@@ -1,10 +1,6 @@
 import { Button, MenuItem, TextField } from "@mui/material";
 import { MuiFileInput } from "mui-file-input";
-import { useDispatch, useSelector } from "react-redux";
-import { getcolors } from "../../features/color/colorSlice";
-import { getCategories } from "../../features/category/categorySlice";
-import { getBrands } from "../../features/brand/brandSlice";
-import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 const ProductForm = ({ formik, images, imagesHandler, error, setError }) => {
   const {
@@ -12,13 +8,6 @@ const ProductForm = ({ formik, images, imagesHandler, error, setError }) => {
     category: { categories },
     color: { colors },
   } = useSelector((state) => state);
-  const dispatch = useDispatch("");
-
-  useEffect(() => {
-    dispatch(getcolors());
-    dispatch(getCategories());
-    dispatch(getBrands());
-  }, [dispatch]);
 
   return (
     <form

@@ -7,6 +7,9 @@ import color from "../features/color/colorSlice";
 import category from "../features/category/categorySlice";
 import orders from "../features/orders/ordersSlice";
 import coupons from "../features/coupons/couponsSlice";
+import blogs from "../features/blogs/blogsSlice";
+import bCategories from "../features/bCategory/bCategoriesSlice";
+import enquiries from "../features/enquiries/enquiriesSlice";
 
 export const store = configureStore({
   reducer: {
@@ -18,5 +21,8 @@ export const store = configureStore({
     category,
     orders,
     coupons,
+    blogs,
+    bCategories,
+    enquiries,
   },
 });

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiAppBar from "@mui/material/AppBar";
@@ -17,6 +17,12 @@ import Sidebar, {
 // alert
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useDispatch } from "react-redux";
+
+import { getBrands } from "../features/brand/brandSlice";
+import { getOrders } from "../features/orders/ordersSlice";
+import { getCategories } from "../features/category/categorySlice";
+import { getcolors } from "../features/color/colorSlice";
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -46,6 +52,15 @@ const Root = () => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  // get all date from database
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getBrands());
+    dispatch(getOrders());
+    dispatch(getCategories());
+    dispatch(getcolors());
+  }, [dispatch]);
 
   return (
     <Box sx={{ display: "flex" }}>

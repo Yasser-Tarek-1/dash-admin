@@ -31,6 +31,9 @@ const CustomTable = ({ headers, rows, title }) => {
                     bgcolor: "#131921",
                   }}
                 >
+                  <TableCell sx={{ color: yellow[800], fontWeight: 500 }}>
+                    sNO
+                  </TableCell>
                   {headers?.map((header, idx) => (
                     <TableCell
                       sx={{ color: yellow[800], fontWeight: 500 }}
@@ -42,28 +45,39 @@ const CustomTable = ({ headers, rows, title }) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows?.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <TableCell component="th" scope="row">
-                      {row.name}
-                    </TableCell>
-                    {row?.category && <TableCell>{row.category}</TableCell>}
-                    {row?.brand && <TableCell>{row.brand}</TableCell>}
-                    {row?.quantity && <TableCell>{row.quantity}</TableCell>}
-                    {row?.price && <TableCell>${row.price}</TableCell>}
-                    {row?.email && <TableCell>{row.email}</TableCell>}
-                    {row?.mobile && <TableCell>{row.mobile}</TableCell>}
-                    {row?.createdAt && <TableCell>{row?.createdAt}</TableCell>}
-                    <TableCell>
-                      <IconButton>
-                        <DeleteIcon color="error" />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {rows?.length != 0 ? (
+                  rows.map((row, idx) => (
+                    <TableRow
+                      key={idx}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      <TableCell component="th" scope="row">
+                        {idx + 1}
+                      </TableCell>
+                      <TableCell component="th" scope="row">
+                        {row.name}
+                      </TableCell>
+                      {row?.category && <TableCell>{row.category}</TableCell>}
+                      {row?.brand && <TableCell>{row.brand}</TableCell>}
+                      {row?.quantity && <TableCell>{row.quantity}</TableCell>}
+                      {row?.price && <TableCell>${row.price}</TableCell>}
+                      {row?.email && <TableCell>{row.email}</TableCell>}
+                      {row?.mobile && <TableCell>{row.mobile}</TableCell>}
+                      {row?.comment && <TableCell>{row?.comment}</TableCell>}
+                      {row?.status && <TableCell>{row?.status}</TableCell>}
+                      {row?.product && <TableCell>{row?.product}</TableCell>}
+                      {row?.amount && <TableCell>{row?.amount}</TableCell>}
+                      {row?.date && <TableCell>{row?.date}</TableCell>}
+                      <TableCell>
+                        <IconButton>
+                          <DeleteIcon color="error" />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <Box sx={{ p: "16px 8px" }}>No Data yet!</Box>
+                )}
               </TableBody>
             </Table>
           </TableContainer>

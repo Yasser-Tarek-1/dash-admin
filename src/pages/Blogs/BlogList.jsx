@@ -1,32 +1,46 @@
 import { Box } from "@mui/material";
-import TabelContainer from "../../components/TabelContainer";
 import Protected from "../../components/ProtectRoute/Protect";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { getBlogs } from "../../features/blogs/blogsSlice";
+import CustomTable from "../../components/CustomTable";
 
-const headCells = [
-  {
-    id: "title",
-    numeric: false,
-    disablePadding: true,
-    label: "Title",
-  },
-  {
-    id: "category",
-    numeric: true,
-    disablePadding: false,
-    label: "Category",
-  },
-  {
-    id: "action",
-    numeric: true,
-    disablePadding: false,
-    label: "Action",
-  },
-];
+function createData(id, name, category) {
+  return { id, name, category };
+}
+const headers = ["Name", "Category", "Action"];
 
 const BlogList = () => {
+  const { blogs, isError, isLoading, isSuccess, message } = useSelector(
+    (state) => state.blogs
+  );
+  const [rows, setRow] = useState([]);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getBlogs());
+  }, [dispatch]);
+
+  useEffect(() => {
+    setRow([]);
+    for (let i = 0; i < blogs.length; i++) {
+      setRow((prev) => {
+        return [
+          ...prev,
+          createData(
+            blogs[i]._id,
+            blogs[i].title,
+            blogs[i].category,
+            blogs[i].numViews
+          ),
+        ];
+      });
+    }
+  }, [blogs]);
+
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: "32px" }}>
-      <TabelContainer rows={[]} headCells={headCells} title={"Blogs List"} />
+      <CustomTable title="Blog List" headers={headers} rows={rows} />
     </Box>
   );
 };

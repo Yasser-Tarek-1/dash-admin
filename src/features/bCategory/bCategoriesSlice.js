@@ -1,43 +1,42 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import ordersService from "./ordersService";
+import bCategoryService from "./bCategoriesService";
 
 const initialState = {
-  orders: [],
+  bCategories: [],
   isError: false,
   isLoading: false,
   isSuccess: false,
   message: "",
 };
 
-export const getOrders = createAsyncThunk(
-  "orders/getOrders",
+export const getbCategory = createAsyncThunk(
+  "bCategories/getbCategory",
   async (_, { rejectWithValue }) => {
     try {
-      const res = await ordersService.getOrders();
+      const res = await bCategoryService.getbCategory();
       return res.data;
     } catch (error) {
-      console.log(error);
       return rejectWithValue(error.message);
     }
   }
 );
 
-export const ordersSlice = createSlice({
-  name: "orders",
+export const bCategoriesSlice = createSlice({
+  name: "bCategories",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(getOrders.pending, (state) => {
+    builder.addCase(getbCategory.pending, (state) => {
       state.isError = false;
       state.isSuccess = false;
       state.isLoading = true;
     }),
-      builder.addCase(getOrders.fulfilled, (state, action) => {
+      builder.addCase(getbCategory.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.orders = action.payload;
+        state.bCategories = action.payload;
       }),
-      builder.addCase(getOrders.rejected, (state, action) => {
+      builder.addCase(getbCategory.rejected, (state, action) => {
         state.isError = true;
         state.isLoading = false;
         state.message = action.payload;
@@ -45,4 +44,4 @@ export const ordersSlice = createSlice({
   },
 });
 
-export default ordersSlice.reducer;
+export default bCategoriesSlice.reducer;

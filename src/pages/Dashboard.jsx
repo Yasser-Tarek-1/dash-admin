@@ -2,7 +2,8 @@ import { Box, Card, Stack, Typography } from "@mui/material";
 import MovingIcon from "@mui/icons-material/Moving";
 import Chart from "../components/Chart";
 import Protected from "../components/ProtectRoute/Protect";
-import CustomTable from "../components/CustomTable";
+
+import Orders from "./Orders";
 
 const Compared = [
   {
@@ -62,13 +63,6 @@ const data = [
   },
 ];
 
-// Table Data
-function createData(id, name, email, mobile) {
-  return { id, name, email, mobile };
-}
-const headers = ["Name", "Email", "Mobile", "Action"];
-const rows = [];
-
 const Dashboard = () => {
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: "48px" }}>
@@ -124,7 +118,7 @@ const Dashboard = () => {
         </Typography>
         <Chart data={data} />
       </Box>
-      <CustomTable title="Last Orders" rows={rows} headers={headers} />
+      <Orders title="Last Orders" />
     </Box>
   );
 };
