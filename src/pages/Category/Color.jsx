@@ -4,7 +4,7 @@ import { useState } from "react";
 import Protected from "../../components/ProtectRoute/Protect";
 import { useDispatch } from "react-redux";
 import { createColor } from "../../features/color/colorSlice";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 
 const Color = () => {
   const [title, setTitle] = useState("");

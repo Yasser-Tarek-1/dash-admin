@@ -3,7 +3,7 @@ import Protected from "../../components/ProtectRoute/Protect";
 import { createBrand } from "../../features/brand/brandSlice";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 
 // I deliberately not use Formik to validate input
 const Brand = () => {

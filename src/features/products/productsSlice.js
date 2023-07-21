@@ -28,7 +28,7 @@ export const createProduct = createAsyncThunk(
       const res = await productsService.createProduct(product);
       return res.data;
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(error.response.data.message || error.message);
     }
   }
 );

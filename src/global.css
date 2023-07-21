@@ -56,3 +56,25 @@ a.active > div {
 .MuiDrawer-root {
   position: absolute;
 }
+
+/* Add Product */
+.imageWrraper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+}
+
+.imageWrraper .imageContainer {
+  width: 200px;
+  height: 250px;
+  position: relative;
+}
+
+.imageWrraper .imageContainer img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}

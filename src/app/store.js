@@ -10,6 +10,7 @@ import coupons from "../features/coupons/couponsSlice";
 import blogs from "../features/blogs/blogsSlice";
 import bCategories from "../features/bCategory/bCategoriesSlice";
 import enquiries from "../features/enquiries/enquiriesSlice";
+import upload from "../features/upload/uploadSlice";
 
 export const store = configureStore({
   reducer: {
@@ -24,5 +25,6 @@ export const store = configureStore({
     blogs,
     bCategories,
     enquiries,
+    upload,
   },
 });

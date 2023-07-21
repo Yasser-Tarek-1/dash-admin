@@ -1,14 +1,18 @@
 import { Button, MenuItem, TextField } from "@mui/material";
 import { MuiFileInput } from "mui-file-input";
-import { useSelector } from "react-redux";
+import ImageShower from "./ImageShower";
 
-const ProductForm = ({ formik, images, imagesHandler, error, setError }) => {
-  const {
-    brand: { brands },
-    category: { categories },
-    color: { colors },
-  } = useSelector((state) => state);
-
+const ProductForm = ({
+  formik,
+  imagesHandler,
+  error,
+  setError,
+  onDeleteImage,
+  brands,
+  categories,
+  colors,
+  images,
+}) => {
   return (
     <form
       onSubmit={formik.handleSubmit}
@@ -128,16 +132,15 @@ const ProductForm = ({ formik, images, imagesHandler, error, setError }) => {
         helperText={formik.touched.quantity && formik.errors.quantity}
       />
       <MuiFileInput
-        name="images"
         color="secondary"
         label="Drag 'n' drop some files here, or click to select files"
-        value={images}
         onChange={imagesHandler}
         multiple
         helperText={error && error}
         error={error ? true : false}
         onBlur={() => setError("")}
       />
+      <ImageShower images={images} onDeleteImage={onDeleteImage} />
       <Button variant="contained" color="secondary" type="submit">
         Add Product
       </Button>

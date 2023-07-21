@@ -14,15 +14,15 @@ import Sidebar, {
   drawerWidth,
   DrawerHeader,
 } from "../components/Layout/Sidebar";
+
 // alert
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { useDispatch } from "react-redux";
 
 import { getBrands } from "../features/brand/brandSlice";
 import { getOrders } from "../features/orders/ordersSlice";
 import { getCategories } from "../features/category/categorySlice";
 import { getcolors } from "../features/color/colorSlice";
+import { Toaster } from "react-hot-toast";
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -75,6 +75,13 @@ const Root = () => {
         draggable
         pauseOnHover
         theme="light"
+      />
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+        toastOptions={{
+          duration: 1500,
+        }}
       />
       <CssBaseline />
       <AppBar position="fixed" open={open} color="primary">

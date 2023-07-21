@@ -6,6 +6,16 @@ import { useState } from "react";
 
 import ProductForm from "./ProductForm";
 
+import {
+  deleteImage,
+  uploadImage,
+  deleteAllImageWhenSubmitForm,
+} from "../../features/upload/uploadSlice";
+import { createProduct } from "../../features/products/productsSlice";
+import { useDispatch, useSelector } from "react-redux";
+
+import { toast } from "react-hot-toast";
+// Product Schema
 const ProductSchema = Yup.object().shape({
   title: Yup.string()
     .min(2, "Too Short!")
@@ -23,8 +33,15 @@ const ProductSchema = Yup.object().shape({
 });
 
 const Product = () => {
-  const [images, setImages] = useState("");
+  const {
+    brand: { brands },
+    category: { categories },
+    color: { colors },
+    upload: { images },
+  } = useSelector((state) => state);
+
   const [error, setError] = useState("");
+  const dispatch = useDispatch();
 
   const formik = useFormik({
     initialValues: {
@@ -35,23 +52,62 @@ const Product = () => {
       brand: "",
       color: "",
       quantity: "",
-      images: "",
+      images: [],
     },
     validationSchema: ProductSchema,
     onSubmit: (values) => {
-      if (images) {
-        console.log({ ...values, images });
+      // check if user upload images or not
+      if (images.length > 0) {
+        const imagesArray = images.map(({ public_id, url }) => {
+          return { public_id, url };
+        });
+        dispatch(
+          createProduct({
+            ...values,
+            color: values.color.split(" "),
+            images: imagesArray,
+          })
+        )
+          .unwrap()
+          .then(() => {
+            toast.success("Product added successfully");
+            formik.resetForm();
+            dispatch(deleteAllImageWhenSubmitForm());
+          })
+          .catch((err) => {
+            if (
+              err.includes(
+                "MongoServerError: E11000 duplicate key error collection"
+              )
+            ) {
+              toast.error("Product title already exists");
+            } else {
+              toast.error(err);
+            }
+          });
         setError("");
-        // login here
       } else {
         setError("Please enter a image");
       }
     },
   });
 
+  // upload images fun
   const imagesHandler = (images) => {
-    setImages(images);
-    setError("");
+    dispatch(uploadImage(images))
+      .unwrap()
+      .catch((err) => {
+        toast.error(err);
+      });
+  };
+
+  // delete images fun
+  const onDeleteImage = (id) => {
+    dispatch(deleteImage(id))
+      .unwrap()
+      .catch((err) => {
+        toast.error(err);
+      });
   };
 
   return (
@@ -64,10 +120,14 @@ const Product = () => {
       </Typography>
       <ProductForm
         formik={formik}
-        images={images}
         imagesHandler={imagesHandler}
         error={error}
         setError={setError}
+        onDeleteImage={onDeleteImage}
+        brands={brands}
+        categories={categories}
+        images={images}
+        colors={colors}
       />
     </Box>
   );
