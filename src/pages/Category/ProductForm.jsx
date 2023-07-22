@@ -78,6 +78,23 @@ const ProductForm = ({
         ))}
       </TextField>
       <TextField
+        select
+        label="Select Tag"
+        color="secondary"
+        name="tags"
+        value={formik.values.tags}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        error={formik.touched.tags && Boolean(formik.errors.tags)}
+        helperText={formik.touched.tags && formik.errors.tags}
+      >
+        {["Featured", "Popular", "Special"].map((tag, idx) => (
+          <MenuItem key={idx} value={tag} sx={{ textTransform: "capitalize" }}>
+            {tag}
+          </MenuItem>
+        ))}
+      </TextField>
+      <TextField
         name="brand"
         select
         label="Select Brand"

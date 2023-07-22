@@ -5,12 +5,12 @@ const getblogs = async () => {
   return await axios.get(`${base_url}blog`, config);
 };
 
-// const createblog = async (blog) => {
-//   return await axios.post(`${base_url}blog`, blog, config);
-// };
+const createBlog = async (blog) => {
+  return await axios.post(`${base_url}blog`, blog, config);
+};
 
 const blogsService = {
   getblogs,
-  //   createblog,
+  createBlog,
 };
 export default blogsService;

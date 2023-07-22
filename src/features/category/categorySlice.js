@@ -9,19 +9,6 @@ const initialState = {
   message: "",
 };
 
-export const createCategory = createAsyncThunk(
-  "category/categorySlice",
-  async (category, { rejectWithValue }) => {
-    try {
-      const res = await categoryService.createCategory(category);
-      return res.data;
-    } catch (error) {
-      console.log(error);
-      return rejectWithValue(error.message);
-    }
-  }
-);
-
 export const getCategories = createAsyncThunk(
   "category/getCategories",
   async (_, { rejectWithValue }) => {
@@ -30,7 +17,19 @@ export const getCategories = createAsyncThunk(
       return res.data;
     } catch (error) {
       console.log(error);
-      return rejectWithValue(error.message);
+      return rejectWithValue(error.response.data.message || error.message);
+    }
+  }
+);
+
+export const createCategory = createAsyncThunk(
+  "category/categorySlice",
+  async (category, { rejectWithValue }) => {
+    try {
+      const res = await categoryService.createCategory(category);
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.message || error.message);
     }
   }
 );
@@ -54,6 +53,12 @@ export const categorySlice = createSlice({
         state.isError = true;
         state.isLoading = false;
         state.message = action.payload;
+      }),
+      // handel fulfilled
+      builder.addCase(createCategory.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.categories.push(action.payload);
       });
   },
 });

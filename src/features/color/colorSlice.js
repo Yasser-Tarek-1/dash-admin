@@ -9,19 +9,6 @@ const initialState = {
   message: "",
 };
 
-export const createColor = createAsyncThunk(
-  "color/createColor",
-  async (color, { rejectWithValue }) => {
-    try {
-      const res = await colorService.createcolor(color);
-      return res.data;
-    } catch (error) {
-      console.log(error);
-      return rejectWithValue(error.message);
-    }
-  }
-);
-
 export const getcolors = createAsyncThunk(
   "color/getcolors",
   async (_, { rejectWithValue }) => {
@@ -30,7 +17,20 @@ export const getcolors = createAsyncThunk(
       return res.data;
     } catch (error) {
       console.log(error);
-      return rejectWithValue(error.message);
+      return rejectWithValue(error.response.data.message || error.message);
+    }
+  }
+);
+
+export const createColor = createAsyncThunk(
+  "color/createColor",
+  async (color, { rejectWithValue }) => {
+    try {
+      const res = await colorService.createcolor(color);
+      return res.data;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error.response.data.message || error.message);
     }
   }
 );
@@ -54,6 +54,12 @@ export const colorSlice = createSlice({
         state.isError = true;
         state.isLoading = false;
         state.message = action.payload;
+      }),
+      // handel fulfilled
+      builder.addCase(createColor.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.colors.push(action.payload);
       });
   },
 });

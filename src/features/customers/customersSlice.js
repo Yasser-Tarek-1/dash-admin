@@ -16,7 +16,7 @@ export const getCustomers = createAsyncThunk(
       const res = await customersService.getCustomers();
       return res.data;
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(error.response.data.message || error.message);
     }
   }
 );

@@ -27,6 +27,7 @@ const ProductSchema = Yup.object().shape({
     .required("Required"),
   price: Yup.string().required("Required"),
   category: Yup.string().required("Required"),
+  tags: Yup.string().required("Required"),
   brand: Yup.string().required("Required"),
   color: Yup.string().required("Required"),
   quantity: Yup.string().required("Required"),
@@ -49,6 +50,7 @@ const Product = () => {
       description: "",
       price: "",
       category: "",
+      tags: "",
       brand: "",
       color: "",
       quantity: "",
@@ -75,12 +77,8 @@ const Product = () => {
             dispatch(deleteAllImageWhenSubmitForm());
           })
           .catch((err) => {
-            if (
-              err.includes(
-                "MongoServerError: E11000 duplicate key error collection"
-              )
-            ) {
-              toast.error("Product title already exists");
+            if (err?.includes("E11000 duplicate key error collection")) {
+              toast.error(`Product ${formik.values.title} already exists`);
             } else {
               toast.error(err);
             }

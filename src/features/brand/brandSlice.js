@@ -9,19 +9,6 @@ const initialState = {
   message: "",
 };
 
-export const createBrand = createAsyncThunk(
-  "brand/createBrand",
-  async (brand, { rejectWithValue }) => {
-    try {
-      const res = await brandService.createBrand(brand);
-      return res.data;
-    } catch (error) {
-      console.log(error);
-      return rejectWithValue(error.message);
-    }
-  }
-);
-
 export const getBrands = createAsyncThunk(
   "brand/getBrands",
   async (_, { rejectWithValue }) => {
@@ -29,8 +16,19 @@ export const getBrands = createAsyncThunk(
       const res = await brandService.getBrands();
       return res.data;
     } catch (error) {
-      console.log(error);
-      return rejectWithValue(error.message);
+      return rejectWithValue(error.response.data.message || error.message);
+    }
+  }
+);
+
+export const createBrand = createAsyncThunk(
+  "brand/createBrand",
+  async (brand, { rejectWithValue }) => {
+    try {
+      const res = await brandService.createBrand(brand);
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.message || error.message);
     }
   }
 );
@@ -54,6 +52,12 @@ export const brandSlice = createSlice({
         state.isError = true;
         state.isLoading = false;
         state.message = action.payload;
+      }),
+      // handel fulfilled
+      builder.addCase(createBrand.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.brands.push(action.payload);
       });
   },
 });

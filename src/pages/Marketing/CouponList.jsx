@@ -1,40 +1,46 @@
 import { Box } from "@mui/material";
 import Protected from "../../components/ProtectRoute/Protect";
-// import { useEffect, useState } from "react";
-// import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import CustomTable from "../../components/CustomTable";
+import { getCoupons } from "../../features/coupons/couponsSlice";
 
-function createData(id, name, createdAt) {
-  return { id, name, createdAt };
+function createData(id, name, discount, date) {
+  return { id, name, discount, date };
 }
-const headers = ["Name", "Created At", "Action"];
+const headers = ["Name", "Discount", "Expiry", "Action"];
 
 const CouponList = () => {
-  // const dispatch = useDispatch();
-  // const { coupons } = useSelector((state) => state.Coupons);
-  // const [rows, setRow] = useState([]);
+  const { coupons } = useSelector((state) => state.coupons);
+  const [rows, setRow] = useState([]);
+  const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   setRow([]);
-  //   for (let i = 0; i < coupons.length; i++) {
-  //     const createdAt = new Date(coupons[i]?.createdAt).toLocaleDateString(
-  //       "en-US",
-  //       {
-  //         weekday: "long",
-  //       }
-  //     );
-  //     setRow((prev) => {
-  //       return [...prev, createData(coupons[i]._id, coupons[i].title, createdAt)];
-  //     });
-  //   }
-  // }, [coupons]);
+  useEffect(() => {
+    setRow([]);
+    for (let i = 0; i < coupons.length; i++) {
+      const date = new Date(coupons[i]?.expiry).toLocaleString();
 
-  // useEffect(() => {
-  //   dispatch(getCoupons());
-  // }, [dispatch]);
+      setRow((prev) => {
+        return [
+          ...prev,
+          createData(
+            coupons[i]._id,
+            coupons[i].name,
+            coupons[i].discount,
+            date
+          ),
+        ];
+      });
+    }
+  }, [coupons]);
+
+  useEffect(() => {
+    dispatch(getCoupons());
+  }, [dispatch]);
+
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: "32px" }}>
-      <CustomTable title="Coupons" headers={headers} rows={[]} />
+      <CustomTable title="Coupons" headers={headers} rows={rows} />
     </Box>
   );
 };

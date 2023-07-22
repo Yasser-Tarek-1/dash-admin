@@ -23,6 +23,7 @@ import { getOrders } from "../features/orders/ordersSlice";
 import { getCategories } from "../features/category/categorySlice";
 import { getcolors } from "../features/color/colorSlice";
 import { Toaster } from "react-hot-toast";
+import { getBCategory } from "../features/bCategory/bCategoriesSlice";
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -60,22 +61,11 @@ const Root = () => {
     dispatch(getOrders());
     dispatch(getCategories());
     dispatch(getcolors());
+    dispatch(getBCategory());
   }, [dispatch]);
 
   return (
     <Box sx={{ display: "flex" }}>
-      <ToastContainer
-        position="top-right"
-        autoClose={1500}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
       <Toaster
         position="top-center"
         reverseOrder={false}

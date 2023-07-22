@@ -3,7 +3,7 @@ import Protected from "../../components/ProtectRoute/Protect";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import CustomTable from "../../components/CustomTable";
-import { getbCategory } from "../../features/bCategory/bCategoriesSlice";
+import { getBCategory } from "../../features/bCategory/bCategoriesSlice";
 
 function createData(id, name, date) {
   return { id, name, date };
@@ -18,7 +18,7 @@ const BlogCategoryList = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getbCategory());
+    dispatch(getBCategory());
   }, [dispatch]);
 
   useEffect(() => {

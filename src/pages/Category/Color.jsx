@@ -27,7 +27,7 @@ const Color = () => {
           setTitle("");
         })
         .catch((err) => {
-          if (err == "Request failed with status code 500") {
+          if (err?.includes("E11000 duplicate key error collection")) {
             return toast.error(`${title} already exists`);
           }
           return toast.error(`${err}`);

@@ -67,6 +67,7 @@ const CustomTable = ({ headers, rows, title }) => {
                       {row?.status && <TableCell>{row?.status}</TableCell>}
                       {row?.product && <TableCell>{row?.product}</TableCell>}
                       {row?.amount && <TableCell>{row?.amount}</TableCell>}
+                      {row?.discount && <TableCell>${row?.discount}</TableCell>}
                       {row?.date && <TableCell>{row?.date}</TableCell>}
                       <TableCell>
                         <IconButton>

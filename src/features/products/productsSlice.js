@@ -16,7 +16,7 @@ export const getProducts = createAsyncThunk(
       const res = await productsService.getProducts();
       return res.data;
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(error.response.data.message || error.message);
     }
   }
 );
@@ -53,23 +53,13 @@ export const productsSlice = createSlice({
         state.isError = true;
         state.isLoading = false;
         state.message = action.payload;
+      }),
+      // handel fulfilled
+      builder.addCase(createProduct.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.products.push(action.payload);
       });
-    // add products
-    // builder.addCase(createProduct.pending, (state) => {
-    //   state.isError = false;
-    //   state.isSuccess = false;
-    //   state.isLoading = true;
-    // }),
-    //   builder.addCase(createProduct.fulfilled, (state, action) => {
-    //     state.isLoading = false;
-    //     state.isSuccess = true;
-    //     state.products = action.payload;
-    //   }),
-    //   builder.addCase(createProduct.rejected, (state, action) => {
-    //     state.isError = true;
-    //     state.isLoading = false;
-    //     state.message = action.payload;
-    //   });
   },
 });
 

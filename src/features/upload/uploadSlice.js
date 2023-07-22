@@ -32,7 +32,7 @@ export const deleteImage = createAsyncThunk(
       await uploadService.deleteImage(id);
       return id;
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(error.response.data.message || error.message);
     }
   }
 );

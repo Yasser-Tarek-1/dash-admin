@@ -8,6 +8,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
 import { createCoupon } from "../../features/coupons/couponsSlice";
+import { toast } from "react-hot-toast";
 
 const Coupon = () => {
   const dispatch = useDispatch();
@@ -23,7 +24,19 @@ const Coupon = () => {
       discount: Yup.string().required("Required"),
     }),
     onSubmit: (values) => {
-      dispatch(createCoupon(values));
+      dispatch(createCoupon(values))
+        .unwrap()
+        .then(({ name }) => {
+          toast.success(`Coupon ${name} added successfully`);
+          formik.resetForm();
+        })
+        .catch((err) => {
+          if (err?.includes("E11000 duplicate key error collection")) {
+            toast.error(`${values.name} already exists`);
+          } else {
+            toast.error(`${err}`);
+          }
+        });
     },
   });
 

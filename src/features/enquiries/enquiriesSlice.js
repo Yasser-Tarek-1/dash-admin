@@ -16,7 +16,7 @@ export const getEnquiries = createAsyncThunk(
       const res = await enquiriesService.getEnquiries();
       return res.data;
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(error.response.data.message || error.message);
     }
   }
 );

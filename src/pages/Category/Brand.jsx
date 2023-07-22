@@ -27,10 +27,11 @@ const Brand = () => {
           setTitle("");
         })
         .catch((err) => {
-          if (err == "Request failed with status code 500") {
-            return toast.error(`${title} already exists`);
+          if (err?.includes("E11000 duplicate key error collection")) {
+            toast.error(`${title} already exists`);
+          } else {
+            toast.error(`${err}`);
           }
-          return toast.error(`${err}`);
         });
     }
   };

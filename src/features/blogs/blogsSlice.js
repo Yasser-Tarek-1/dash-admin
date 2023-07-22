@@ -14,9 +14,23 @@ export const getBlogs = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const res = await blogsService.getblogs();
+      console.log(res.data);
       return res.data;
     } catch (error) {
-      return rejectWithValue(error.message);
+      console.log(error);
+      return rejectWithValue(error.response.data.message || error.message);
+    }
+  }
+);
+
+export const createBlog = createAsyncThunk(
+  "blogs/createBlog",
+  async (blog, { rejectWithValue }) => {
+    try {
+      const res = await blogsService.createBlog(blog);
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.message || error.message);
     }
   }
 );
@@ -40,6 +54,12 @@ export const blogsSlice = createSlice({
         state.isError = true;
         state.isLoading = false;
         state.message = action.payload;
+      }),
+      // handel fulfilled
+      builder.addCase(createBlog.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.blogs.push(action.payload);
       });
   },
 });

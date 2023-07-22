@@ -42,6 +42,7 @@ export const authSlice = createSlice({
       builder.addCase(login.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
+
         if (action.payload == "Invalid Credentials") {
           state.message = "The password is wrong";
         } else if (
