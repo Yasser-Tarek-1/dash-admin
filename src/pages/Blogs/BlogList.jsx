@@ -1,19 +1,19 @@
-import { Box } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import Protected from "../../components/ProtectRoute/Protect";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { getBlogs } from "../../features/blogs/blogsSlice";
 import CustomTable from "../../components/CustomTable";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
-function createData(id, name, category) {
-  return { id, name, category };
+function createData(id, name, category, numViews, action) {
+  return { id, name, category, numViews, ...action };
 }
 const headers = ["Name", "Category", "Action"];
 
 const BlogList = () => {
-  const { blogs, isError, isLoading, isSuccess, message } = useSelector(
-    (state) => state.blogs
-  );
+  const { blogs } = useSelector((state) => state.blogs);
   const [rows, setRow] = useState([]);
   const dispatch = useDispatch();
 
@@ -31,7 +31,28 @@ const BlogList = () => {
             blogs[i]._id,
             blogs[i].title,
             blogs[i].category,
-            blogs[i].numViews
+            blogs[i].numViews,
+            {
+              action: (
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  {/* <Link to={`/admin/product/${products[i]._id}`}> */}
+                  <IconButton>
+                    <EditIcon color="secondary" />
+                  </IconButton>
+                  {/* </Link> */}
+                  <IconButton
+                  // onClick={() =>
+                  //   openModalHandler({
+                  //     id: products[i]._id,
+                  //     title: products[i].title,
+                  //   })
+                  // }
+                  >
+                    <DeleteIcon color="error" />
+                  </IconButton>
+                </Box>
+              ),
+            }
           ),
         ];
       });

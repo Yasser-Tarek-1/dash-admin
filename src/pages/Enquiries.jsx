@@ -1,12 +1,14 @@
-import { Box, MenuItem, Select } from "@mui/material";
+import { Box, IconButton, MenuItem, Select } from "@mui/material";
 import Protected from "../components/ProtectRoute/Protect";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { getEnquiries } from "../features/enquiries/enquiriesSlice";
 import CustomTable from "../components/CustomTable";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
-function createData(id, name, email, mobile, comment, status) {
-  return { id, name, email, mobile, comment, ...status };
+function createData(id, name, email, mobile, comment, status, action) {
+  return { id, name, email, mobile, comment, ...status, ...action };
 }
 const headers = ["Name", "Email", "Mobile", "Comment", "Status", "Action"];
 
@@ -44,6 +46,27 @@ const Enquiries = () => {
                     {enquiries[i].status}
                   </MenuItem>
                 </Select>
+              ),
+            },
+            {
+              action: (
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  {/* <Link to={`/admin/product/${products[i]._id}`}> */}
+                  <IconButton>
+                    <EditIcon color="secondary" />
+                  </IconButton>
+                  {/* </Link> */}
+                  <IconButton
+                  // onClick={() =>
+                  //   openModalHandler({
+                  //     id: products[i]._id,
+                  //     title: products[i].title,
+                  //   })
+                  // }
+                  >
+                    <DeleteIcon color="error" />
+                  </IconButton>
+                </Box>
               ),
             }
           ),

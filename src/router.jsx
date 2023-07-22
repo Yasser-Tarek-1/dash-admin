@@ -61,6 +61,10 @@ const router = createBrowserRouter([
         element: <Brand />,
       },
       {
+        path: "brand/:id",
+        element: <Brand />,
+      },
+      {
         path: "brand-list",
         element: <BrandList />,
       },
@@ -69,11 +73,19 @@ const router = createBrowserRouter([
         element: <Category />,
       },
       {
+        path: "category/:id",
+        element: <Category />,
+      },
+      {
         path: "category-list",
         element: <CategoryList />,
       },
       {
         path: "color",
+        element: <Color />,
+      },
+      {
+        path: "color/:id",
         element: <Color />,
       },
       {
@@ -91,6 +103,10 @@ const router = createBrowserRouter([
         element: <Coupon />,
       },
       {
+        path: "coupon/:id",
+        element: <Coupon />,
+      },
+      {
         path: "coupon-list",
         element: <CouponList />,
       },
@@ -105,6 +121,10 @@ const router = createBrowserRouter([
       },
       {
         path: "blog-category",
+        element: <BlogCategory />,
+      },
+      {
+        path: "blog-category/:id",
         element: <BlogCategory />,
       },
       {

@@ -5,8 +5,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Box, IconButton, Typography } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { Box, Stack, Typography } from "@mui/material";
 import { yellow } from "@mui/material/colors";
 
 const CustomTable = ({ headers, rows, title }) => {
@@ -55,7 +54,23 @@ const CustomTable = ({ headers, rows, title }) => {
                         {idx + 1}
                       </TableCell>
                       <TableCell component="th" scope="row">
-                        {row.name}
+                        <Stack
+                          flexDirection={"row"}
+                          alignItems={"center"}
+                          gap={"8px"}
+                        >
+                          <span
+                            style={{
+                              width: "16px",
+                              height: "16px",
+                              display: "block",
+                              borderRadius: "50%",
+                              backgroundColor: row.name,
+                            }}
+                          ></span>
+                          {console.log(row.action)}
+                          {row.name}
+                        </Stack>
                       </TableCell>
                       {row?.category && <TableCell>{row.category}</TableCell>}
                       {row?.brand && <TableCell>{row.brand}</TableCell>}
@@ -68,12 +83,9 @@ const CustomTable = ({ headers, rows, title }) => {
                       {row?.product && <TableCell>{row?.product}</TableCell>}
                       {row?.amount && <TableCell>{row?.amount}</TableCell>}
                       {row?.discount && <TableCell>${row?.discount}</TableCell>}
+                      {/* {row?.numViews && <TableCell>{row?.numViews}</TableCell>} */}
                       {row?.date && <TableCell>{row?.date}</TableCell>}
-                      <TableCell>
-                        <IconButton>
-                          <DeleteIcon color="error" />
-                        </IconButton>
-                      </TableCell>
+                      {row?.action && <TableCell>{row?.action}</TableCell>}
                     </TableRow>
                   ))
                 ) : (

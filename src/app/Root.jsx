@@ -15,15 +15,18 @@ import Sidebar, {
   DrawerHeader,
 } from "../components/Layout/Sidebar";
 
+import Modal from "../components/Layout/Modal";
+import { ReactDOM } from "react";
+
 // alert
 import { useDispatch } from "react-redux";
 
 import { getBrands } from "../features/brand/brandSlice";
 import { getOrders } from "../features/orders/ordersSlice";
 import { getCategories } from "../features/category/categorySlice";
-import { getcolors } from "../features/color/colorSlice";
+import { getColors } from "../features/color/colorSlice";
 import { Toaster } from "react-hot-toast";
-import { getBCategory } from "../features/bCategory/bCategoriesSlice";
+import { getBCategories } from "../features/bCategory/bCategoriesSlice";
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -60,8 +63,8 @@ const Root = () => {
     dispatch(getBrands());
     dispatch(getOrders());
     dispatch(getCategories());
-    dispatch(getcolors());
-    dispatch(getBCategory());
+    dispatch(getColors());
+    dispatch(getBCategories());
   }, [dispatch]);
 
   return (

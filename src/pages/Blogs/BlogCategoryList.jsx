@@ -1,24 +1,32 @@
-import { Box } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import Protected from "../../components/ProtectRoute/Protect";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import CustomTable from "../../components/CustomTable";
-import { getBCategory } from "../../features/bCategory/bCategoriesSlice";
+import {
+  getBCategories,
+  deleteBCategory,
+} from "../../features/bCategory/bCategoriesSlice";
+import { Link } from "react-router-dom";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import Modal from "../../components/Layout/Modal";
+import { toast } from "react-hot-toast";
 
-function createData(id, name, date) {
-  return { id, name, date };
+function createData(id, name, date, action) {
+  return { id, name, date, ...action };
 }
 const headers = ["Name", "Date", "Action"];
 
 const BlogCategoryList = () => {
-  const { bCategories, isError, isLoading, isSuccess, message } = useSelector(
-    (state) => state.bCategories
-  );
+  const { bCategories } = useSelector((state) => state.bCategories);
   const [rows, setRow] = useState([]);
   const dispatch = useDispatch();
+  const [open, setOpen] = useState(false);
+  const [deletedItem, setDeletedItem] = useState({});
 
   useEffect(() => {
-    dispatch(getBCategory());
+    dispatch(getBCategories());
   }, [dispatch]);
 
   useEffect(() => {
@@ -29,16 +37,66 @@ const BlogCategoryList = () => {
       setRow((prev) => {
         return [
           ...prev,
-          createData(bCategories[i]._id, bCategories[i].title, date),
+          createData(bCategories[i]._id, bCategories[i].title, date, {
+            action: (
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <Link to={`/admin/blog-category/${bCategories[i]._id}`}>
+                  <IconButton>
+                    <EditIcon color="secondary" />
+                  </IconButton>
+                </Link>
+                <IconButton
+                  onClick={() =>
+                    openModalHandler({
+                      id: bCategories[i]._id,
+                      title: bCategories[i].title,
+                    })
+                  }
+                >
+                  <DeleteIcon color="error" />
+                </IconButton>
+              </Box>
+            ),
+          }),
         ];
       });
     }
   }, [bCategories]);
 
+  // delete handler
+  const openModalHandler = (data) => {
+    setOpen(true);
+    setDeletedItem(data);
+  };
+
+  const onCloseHandler = () => {
+    setOpen(false);
+  };
+
+  const onDeleteHandler = () => {
+    setOpen(false);
+    dispatch(deleteBCategory(deletedItem?.id))
+      .unwrap()
+      .then(() => {
+        toast.success(`${deletedItem?.title} Deleted successfully`);
+      })
+      .catch(() => {
+        toast.error("Network Error!");
+      });
+  };
+
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: "32px" }}>
-      <CustomTable title="Blog Category List" headers={headers} rows={rows} />
-    </Box>
+    <>
+      <Modal
+        open={open}
+        onCloseHandler={onCloseHandler}
+        title={deletedItem?.title}
+        onDeleteHandler={onDeleteHandler}
+      />
+      <Box sx={{ display: "flex", flexDirection: "column", gap: "32px" }}>
+        <CustomTable title="Blog Category List" headers={headers} rows={rows} />
+      </Box>
+    </>
   );
 };
 

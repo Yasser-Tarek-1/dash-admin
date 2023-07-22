@@ -1,12 +1,14 @@
-import { Box } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import Protected from "../../components/ProtectRoute/Protect";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { getProducts } from "../../features/products/productsSlice";
 import CustomTable from "../../components/CustomTable";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
-function createData(id, name, category, brand, quantity, price) {
-  return { id, name, category, brand, quantity, price };
+function createData(id, name, category, brand, quantity, price, action) {
+  return { id, name, category, brand, quantity, price, ...action };
 }
 const headers = ["Name", "Category", "Brand", "Quantity", "Price", "Action"];
 
@@ -31,7 +33,28 @@ const ProductList = () => {
             products[i].category,
             products[i].brand,
             products[i].quantity,
-            products[i].price
+            products[i].price,
+            {
+              action: (
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  {/* <Link to={`/admin/product/${products[i]._id}`}> */}
+                  <IconButton>
+                    <EditIcon color="secondary" />
+                  </IconButton>
+                  {/* </Link> */}
+                  <IconButton
+                  // onClick={() =>
+                  //   openModalHandler({
+                  //     id: products[i]._id,
+                  //     title: products[i].title,
+                  //   })
+                  // }
+                  >
+                    <DeleteIcon color="error" />
+                  </IconButton>
+                </Box>
+              ),
+            }
           ),
         ];
       });
