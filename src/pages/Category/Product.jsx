@@ -2,7 +2,7 @@ import { Box, Typography } from "@mui/material";
 import Protected from "../../components/ProtectRoute/Protect";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import ProductForm from "./ProductForm";
 
@@ -11,10 +11,17 @@ import {
   uploadImage,
   deleteAllImageWhenSubmitForm,
 } from "../../features/upload/uploadSlice";
-import { createProduct } from "../../features/products/productsSlice";
+import {
+  createProduct,
+  getProduct,
+  deleteProductImage,
+  updateProduct,
+} from "../../features/products/productsSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 import { toast } from "react-hot-toast";
+import { useNavigate, useParams } from "react-router-dom";
+
 // Product Schema
 const ProductSchema = Yup.object().shape({
   title: Yup.string()
@@ -39,25 +46,67 @@ const Product = () => {
     category: { categories },
     color: { colors },
     upload: { images },
+    products: { product },
   } = useSelector((state) => state);
 
   const [error, setError] = useState("");
   const dispatch = useDispatch();
 
-  const formik = useFormik({
-    initialValues: {
-      title: "",
-      description: "",
-      price: "",
-      category: "",
-      tags: "",
-      brand: "",
-      color: "",
-      quantity: "",
-      images: [],
-    },
-    validationSchema: ProductSchema,
-    onSubmit: (values) => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (id) {
+      dispatch(getProduct(id));
+    }
+  }, [dispatch, id]);
+
+  const initialValues = {
+    title: product.title || "",
+    description: product.description || "",
+    price: product.price || "",
+    category: product.category || "",
+    tags: product.tags || "",
+    brand: product.brand || "",
+    color: product.color || "",
+    quantity: product.quantity || "",
+    images: product.images || [],
+  };
+
+  const onSubmit = (values) => {
+    if (id && product) {
+      // check if user upload images or not
+      // Update
+      if (images.length > 0 || product.images.length > 0) {
+        const imagesArray = images.map(({ public_id, url }) => {
+          return { public_id, url };
+        });
+
+        dispatch(
+          updateProduct({
+            id,
+            ...values,
+            color: values.color.split(" "),
+            images: [...imagesArray, ...product.images],
+          })
+        )
+          .unwrap()
+          .then(() => {
+            toast.success(`${formik.values.title} Updated successfully`);
+            formik.resetForm();
+            dispatch(deleteAllImageWhenSubmitForm());
+            setTimeout(() => {
+              navigate("/admin/product-list");
+            }, 1000);
+          })
+          .catch((err) => {
+            toast.error(err);
+          });
+        setError("");
+      } else {
+        setError("Please enter an image");
+      }
+    } else {
       // check if user upload images or not
       if (images.length > 0) {
         const imagesArray = images.map(({ public_id, url }) => {
@@ -72,7 +121,7 @@ const Product = () => {
         )
           .unwrap()
           .then(() => {
-            toast.success("Product added successfully");
+            toast.success(`Product ${formik.values.title} added successfully`);
             formik.resetForm();
             dispatch(deleteAllImageWhenSubmitForm());
           })
@@ -87,7 +136,14 @@ const Product = () => {
       } else {
         setError("Please enter a image");
       }
-    },
+    }
+  };
+
+  const formik = useFormik({
+    initialValues: initialValues,
+    enableReinitialize: true,
+    validationSchema: ProductSchema,
+    onSubmit: (values) => onSubmit(values),
   });
 
   // upload images fun
@@ -103,10 +159,16 @@ const Product = () => {
   const onDeleteImage = (id) => {
     dispatch(deleteImage(id))
       .unwrap()
+      .then((res) => {
+        // delete image local from Product {}
+        dispatch(deleteProductImage(res));
+      })
       .catch((err) => {
         toast.error(err);
       });
   };
+
+  const allImages = images.concat(product?.images);
 
   return (
     <Box>
@@ -114,7 +176,7 @@ const Product = () => {
         component="h3"
         sx={{ fontSize: "26px", fontWeight: 600, mb: "32px" }}
       >
-        Add Product
+        {id && product ? "Edit" : "Add"} Product
       </Typography>
       <ProductForm
         formik={formik}
@@ -124,7 +186,7 @@ const Product = () => {
         onDeleteImage={onDeleteImage}
         brands={brands}
         categories={categories}
-        images={images}
+        images={allImages}
         colors={colors}
       />
     </Box>

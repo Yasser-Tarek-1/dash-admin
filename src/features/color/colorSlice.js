@@ -37,7 +37,7 @@ export const createColor = createAsyncThunk(
 );
 
 export const getColor = createAsyncThunk(
-  "brand/getColor",
+  "color/getColor",
   async (id, { rejectWithValue }) => {
     try {
       const res = await colorService.getColor(id);
@@ -49,7 +49,7 @@ export const getColor = createAsyncThunk(
 );
 
 export const updateColor = createAsyncThunk(
-  "brand/updateColor",
+  "color/updateColor",
   async ({ id, title }, { rejectWithValue }) => {
     try {
       const res = await colorService.updateColor({ id, title });
@@ -62,7 +62,7 @@ export const updateColor = createAsyncThunk(
 );
 
 export const deleteColor = createAsyncThunk(
-  "brand/deleteColor",
+  "color/deleteColor",
   async (id, { rejectWithValue }) => {
     try {
       const res = await colorService.deleteColor(id);

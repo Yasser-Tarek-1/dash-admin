@@ -25,7 +25,6 @@ const Modal = ({ title, open, onDeleteHandler, onCloseHandler }) => {
       <DialogTitle>
         Are you sure you want to delete
         <Typography component={"span"} color="error">
-          {" "}
           {title || "Yasser"}?
         </Typography>
       </DialogTitle>

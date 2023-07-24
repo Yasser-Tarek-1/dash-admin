@@ -2,10 +2,13 @@ import { Box, IconButton } from "@mui/material";
 import Protected from "../../components/ProtectRoute/Protect";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { getBlogs } from "../../features/blogs/blogsSlice";
+import { getBlogs, deleteBlog } from "../../features/blogs/blogsSlice";
 import CustomTable from "../../components/CustomTable";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { Link } from "react-router-dom";
+import { toast } from "react-hot-toast";
+import Modal from "../../components/Layout/Modal";
 
 function createData(id, name, category, numViews, action) {
   return { id, name, category, numViews, ...action };
@@ -16,6 +19,8 @@ const BlogList = () => {
   const { blogs } = useSelector((state) => state.blogs);
   const [rows, setRow] = useState([]);
   const dispatch = useDispatch();
+  const [open, setOpen] = useState(false);
+  const [deletedItem, setDeletedItem] = useState({});
 
   useEffect(() => {
     dispatch(getBlogs());
@@ -35,18 +40,18 @@ const BlogList = () => {
             {
               action: (
                 <Box sx={{ display: "flex", alignItems: "center" }}>
-                  {/* <Link to={`/admin/product/${products[i]._id}`}> */}
-                  <IconButton>
-                    <EditIcon color="secondary" />
-                  </IconButton>
-                  {/* </Link> */}
+                  <Link to={`/admin/blog/${blogs[i]._id}`}>
+                    <IconButton>
+                      <EditIcon color="secondary" />
+                    </IconButton>
+                  </Link>
                   <IconButton
-                  // onClick={() =>
-                  //   openModalHandler({
-                  //     id: products[i]._id,
-                  //     title: products[i].title,
-                  //   })
-                  // }
+                    onClick={() =>
+                      openModalHandler({
+                        id: blogs[i]._id,
+                        title: blogs[i].title,
+                      })
+                    }
                   >
                     <DeleteIcon color="error" />
                   </IconButton>
@@ -59,10 +64,40 @@ const BlogList = () => {
     }
   }, [blogs]);
 
+  // delete handler
+  const openModalHandler = (data) => {
+    setOpen(true);
+    setDeletedItem(data);
+  };
+
+  const onCloseHandler = () => {
+    setOpen(false);
+  };
+
+  const onDeleteHandler = () => {
+    setOpen(false);
+    dispatch(deleteBlog(deletedItem?.id))
+      .unwrap()
+      .then(() => {
+        toast.success(`${deletedItem?.title} Deleted successfully`);
+      })
+      .catch(() => {
+        toast.error("Network Error!");
+      });
+  };
+
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: "32px" }}>
-      <CustomTable title="Blog List" headers={headers} rows={rows} />
-    </Box>
+    <>
+      <Modal
+        open={open}
+        onCloseHandler={onCloseHandler}
+        title={deletedItem?.title}
+        onDeleteHandler={onDeleteHandler}
+      />
+      <Box sx={{ display: "flex", flexDirection: "column", gap: "32px" }}>
+        <CustomTable title="Blog List" headers={headers} rows={rows} />
+      </Box>
+    </>
   );
 };
 

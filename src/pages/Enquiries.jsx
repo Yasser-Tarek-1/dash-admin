@@ -2,22 +2,29 @@ import { Box, IconButton, MenuItem, Select } from "@mui/material";
 import Protected from "../components/ProtectRoute/Protect";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { getEnquiries } from "../features/enquiries/enquiriesSlice";
+import {
+  getEnquiries,
+  deleteEnquiry,
+} from "../features/enquiries/enquiriesSlice";
 import CustomTable from "../components/CustomTable";
-import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import { Link } from "react-router-dom";
+import { toast } from "react-hot-toast";
+import Modal from "../components/Layout/Modal";
 
 function createData(id, name, email, mobile, comment, status, action) {
-  return { id, name, email, mobile, comment, ...status, ...action };
+  return { id, name, email, mobile, comment, status, ...action };
 }
 const headers = ["Name", "Email", "Mobile", "Comment", "Status", "Action"];
 
 const Enquiries = () => {
-  const { enquiries, isError, isLoading, isSuccess, message } = useSelector(
-    (state) => state.enquiries
-  );
+  const { enquiries } = useSelector((state) => state.enquiries);
   const [rows, setRow] = useState([]);
   const dispatch = useDispatch();
+
+  const [open, setOpen] = useState(false);
+  const [deletedItem, setDeletedItem] = useState({});
 
   useEffect(() => {
     dispatch(getEnquiries());
@@ -35,34 +42,22 @@ const Enquiries = () => {
             enquiries[i].email,
             enquiries[i].mobile,
             enquiries[i].comment,
-            {
-              status: (
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={enquiries[i].status}
-                >
-                  <MenuItem value={enquiries[i].status}>
-                    {enquiries[i].status}
-                  </MenuItem>
-                </Select>
-              ),
-            },
+            enquiries[i].status,
             {
               action: (
                 <Box sx={{ display: "flex", alignItems: "center" }}>
-                  {/* <Link to={`/admin/product/${products[i]._id}`}> */}
-                  <IconButton>
-                    <EditIcon color="secondary" />
-                  </IconButton>
-                  {/* </Link> */}
+                  <Link to={`/admin/enquiries/${enquiries[i]._id}`}>
+                    <IconButton>
+                      <VisibilityIcon color="secondary" />
+                    </IconButton>
+                  </Link>
                   <IconButton
-                  // onClick={() =>
-                  //   openModalHandler({
-                  //     id: products[i]._id,
-                  //     title: products[i].title,
-                  //   })
-                  // }
+                    onClick={() =>
+                      openModalHandler({
+                        id: enquiries[i]._id,
+                        title: enquiries[i].name,
+                      })
+                    }
                   >
                     <DeleteIcon color="error" />
                   </IconButton>
@@ -75,10 +70,40 @@ const Enquiries = () => {
     }
   }, [enquiries]);
 
+  // delete handler
+  const openModalHandler = (data) => {
+    setOpen(true);
+    setDeletedItem(data);
+  };
+
+  const onCloseHandler = () => {
+    setOpen(false);
+  };
+
+  const onDeleteHandler = () => {
+    setOpen(false);
+    dispatch(deleteEnquiry(deletedItem?.id))
+      .unwrap()
+      .then(() => {
+        toast.success(`${deletedItem?.title} Deleted successfully`);
+      })
+      .catch(() => {
+        toast.error("Network Error!");
+      });
+  };
+
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: "32px" }}>
-      <CustomTable title="Enquiries" headers={headers} rows={rows} />
-    </Box>
+    <>
+      <Modal
+        open={open}
+        onCloseHandler={onCloseHandler}
+        title={deletedItem?.title}
+        onDeleteHandler={onDeleteHandler}
+      />
+      <Box sx={{ display: "flex", flexDirection: "column", gap: "32px" }}>
+        <CustomTable title="Enquiries" headers={headers} rows={rows} />
+      </Box>
+    </>
   );
 };
 

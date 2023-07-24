@@ -68,13 +68,13 @@ const CustomTable = ({ headers, rows, title }) => {
                               backgroundColor: row.name,
                             }}
                           ></span>
-                          {console.log(row.action)}
                           {row.name}
                         </Stack>
                       </TableCell>
                       {row?.category && <TableCell>{row.category}</TableCell>}
                       {row?.brand && <TableCell>{row.brand}</TableCell>}
                       {row?.quantity && <TableCell>{row.quantity}</TableCell>}
+                      {row?.count && <TableCell>{row.count}</TableCell>}
                       {row?.price && <TableCell>${row.price}</TableCell>}
                       {row?.email && <TableCell>{row.email}</TableCell>}
                       {row?.mobile && <TableCell>{row.mobile}</TableCell>}

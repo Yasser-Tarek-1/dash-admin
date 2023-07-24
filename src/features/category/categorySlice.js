@@ -36,7 +36,7 @@ export const createCategory = createAsyncThunk(
 );
 
 export const getCategory = createAsyncThunk(
-  "brand/getCategory",
+  "category/getCategory",
   async (id, { rejectWithValue }) => {
     try {
       const res = await categoryService.getCategory(id);
@@ -48,7 +48,7 @@ export const getCategory = createAsyncThunk(
 );
 
 export const updateCategory = createAsyncThunk(
-  "brand/updateCategory",
+  "category/updateCategory",
   async ({ id, title }, { rejectWithValue }) => {
     try {
       const res = await categoryService.updateCategory({ id, title });
@@ -61,7 +61,7 @@ export const updateCategory = createAsyncThunk(
 );
 
 export const deleteCategory = createAsyncThunk(
-  "brand/deleteCategory",
+  "category/deleteCategory",
   async (id, { rejectWithValue }) => {
     try {
       const res = await categoryService.deleteCategory(id);

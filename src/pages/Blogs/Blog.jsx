@@ -2,7 +2,7 @@ import { Box, Button, MenuItem, TextField, Typography } from "@mui/material";
 import Protected from "../../components/ProtectRoute/Protect";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   deleteImage,
@@ -15,7 +15,14 @@ import { toast } from "react-hot-toast";
 import { MuiFileInput } from "mui-file-input";
 import ImageShower from "../Category/ImageShower";
 
-import { createBlog } from "../../features/blogs/blogsSlice";
+import {
+  createBlog,
+  getBlog,
+  updateBlog,
+  deleteBlogImage,
+} from "../../features/blogs/blogsSlice";
+import { useNavigate, useParams } from "react-router-dom";
+
 // Blog Schema
 const BlogSchema = Yup.object().shape({
   title: Yup.string()
@@ -33,21 +40,62 @@ const Blog = () => {
   const {
     bCategories: { bCategories },
     upload: { images },
+    blogs: { blog },
   } = useSelector((state) => state);
 
   const [error, setError] = useState("");
   const dispatch = useDispatch();
 
-  const formik = useFormik({
-    initialValues: {
-      title: "",
-      description: "",
-      category: "",
-      images: [],
-    },
-    validationSchema: BlogSchema,
-    onSubmit: (values) => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (id) {
+      dispatch(getBlog(id));
+    }
+  }, [dispatch, id]);
+
+  const initialValues = {
+    title: blog.title || "",
+    description: blog.description || "",
+    category: blog.category || "",
+    images: blog.images || [],
+  };
+
+  const onSubmit = (values) => {
+    if (blog && id) {
       // check if user upload images or not
+      // Update
+      if (images.length > 0 || blog.images.length > 0) {
+        const imagesArray = images.map(({ public_id, url }) => {
+          return { public_id, url };
+        });
+        dispatch(
+          updateBlog({
+            id,
+            ...values,
+            images: [...imagesArray, ...blog.images],
+          })
+        )
+          .unwrap()
+          .then(() => {
+            toast.success(`${formik.values.title} Updated successfully`);
+            formik.resetForm();
+            dispatch(deleteAllImageWhenSubmitForm());
+            setTimeout(() => {
+              navigate("/admin/blog-list");
+            }, 1000);
+          })
+          .catch((err) => {
+            toast.error(err);
+          });
+        setError("");
+      } else {
+        setError("Please enter an image");
+      }
+    } else {
+      // check if user upload images or not
+      // Add
       if (images.length > 0) {
         const imagesArray = images.map(({ public_id, url }) => {
           return { public_id, url };
@@ -69,9 +117,16 @@ const Blog = () => {
           });
         setError("");
       } else {
-        setError("Please enter a image");
+        setError("Please enter an image");
       }
-    },
+    }
+  };
+
+  const formik = useFormik({
+    initialValues: initialValues,
+    enableReinitialize: true,
+    validationSchema: BlogSchema,
+    onSubmit: (values) => onSubmit(values),
   });
 
   // upload images fun
@@ -87,10 +142,16 @@ const Blog = () => {
   const onDeleteImage = (id) => {
     dispatch(deleteImage(id))
       .unwrap()
+      .then((res) => {
+        // delete image local from blog {}
+        dispatch(deleteBlogImage(res));
+      })
       .catch((err) => {
         toast.error(err);
       });
   };
+
+  const allImages = images.concat(blog?.images);
 
   return (
     <Box>
@@ -98,7 +159,7 @@ const Blog = () => {
         component="h3"
         sx={{ fontSize: "26px", fontWeight: 600, mb: "32px" }}
       >
-        Add Blog
+        {id && blog ? "Edit" : "Add"} Blog
       </Typography>
       <form
         onSubmit={formik.handleSubmit}
@@ -162,9 +223,9 @@ const Blog = () => {
           error={error ? true : false}
           onBlur={() => setError("")}
         />
-        <ImageShower images={images} onDeleteImage={onDeleteImage} />
+        <ImageShower images={allImages} onDeleteImage={onDeleteImage} />
         <Button variant="contained" color="secondary" type="submit">
-          Add New Blog
+          {id && blog ? "Update" : "Add New"} Blog
         </Button>
       </form>
     </Box>

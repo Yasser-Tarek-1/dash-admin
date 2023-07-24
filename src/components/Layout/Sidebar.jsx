@@ -111,6 +111,7 @@ const Sidebar = ({ open, handleDrawerClose }) => {
         {links.map(({ label, children, key, icon, link }) => {
           return !children ? (
             <NavLink
+              onClick={handleDrawerClose}
               to={link}
               key={key}
               className={({ isActive }) => (isActive ? "active-link" : "")}
@@ -134,7 +135,12 @@ const Sidebar = ({ open, handleDrawerClose }) => {
                 <List component="div" disablePadding>
                   {children.map((chiled) => {
                     return (
-                      <NavLink to={chiled?.link} key={chiled.key} end>
+                      <NavLink
+                        onClick={handleDrawerClose}
+                        to={chiled?.link}
+                        key={chiled.key}
+                        end
+                      >
                         <ListItemButton sx={{ pl: 4 }}>
                           <ListItemIcon sx={{ color: "#131921" }}>
                             {chiled?.icon ? chiled.icon : <MailIcon />}

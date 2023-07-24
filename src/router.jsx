@@ -21,6 +21,8 @@ import BlogList from "./pages/Blogs/BlogList";
 import BlogCategory from "./pages/Blogs/BlogCategory";
 import BlogCategoryList from "./pages/Blogs/BlogCategoryList";
 import Enquiries from "./pages/Enquiries";
+import ViewEnquiry from "./pages/ViewEnquiry";
+import ViewOrder from "./pages/ViewOrder";
 
 const router = createBrowserRouter([
   {
@@ -50,6 +52,10 @@ const router = createBrowserRouter([
       // Category
       {
         path: "product",
+        element: <Product />,
+      },
+      {
+        path: "product/:id",
         element: <Product />,
       },
       {
@@ -97,6 +103,10 @@ const router = createBrowserRouter([
         path: "orders",
         element: <Orders />,
       },
+      {
+        path: "orders/:id",
+        element: <ViewOrder />,
+      },
       // Marketing
       {
         path: "coupon",
@@ -113,6 +123,10 @@ const router = createBrowserRouter([
       // Blogs
       {
         path: "blog",
+        element: <Blog />,
+      },
+      {
+        path: "blog/:id",
         element: <Blog />,
       },
       {
@@ -134,6 +148,10 @@ const router = createBrowserRouter([
       {
         path: "enquiries",
         element: <Enquiries />,
+      },
+      {
+        path: "enquiries/:id",
+        element: <ViewEnquiry />,
       },
     ],
   },

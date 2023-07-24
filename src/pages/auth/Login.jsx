@@ -37,7 +37,7 @@ const Login = () => {
         .unwrap()
         .then((res) => {
           localStorage.setItem("user", JSON.stringify(res));
-          navigate("/", { replace: true });
+          navigate("/admin", { replace: true });
         })
         .catch((err) => {
           console.log(err);

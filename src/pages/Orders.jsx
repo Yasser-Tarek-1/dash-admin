@@ -5,11 +5,12 @@ import { useEffect, useState } from "react";
 import CustomTable from "../components/CustomTable";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { Link } from "react-router-dom";
 
 function createData(id, name, product, amount, date, action) {
   return { id, name, product, amount, date, ...action };
 }
-const headers = ["Name", "Product", "Amount", "Date", "Action"];
+const headers = ["Name", "Products", "Amount", "Date", "Action"];
 
 const Orders = ({ title }) => {
   const { orders } = useSelector((state) => state.orders);
@@ -25,11 +26,12 @@ const Orders = ({ title }) => {
           createData(
             orders[i]._id,
             orders[i].orderby.firstname,
-            orders[i].products.map(({ product }, idx) => (
-              <li key={idx} style={{ listStyle: "outside" }}>
-                {product.title}
-              </li>
-            )),
+            <Link
+              to={`/admin/orders/${orders[i]._id}`}
+              style={{ textDecoration: "underline" }}
+            >
+              View Order
+            </Link>,
             orders[i].paymentIntent.amount,
             date,
             {
